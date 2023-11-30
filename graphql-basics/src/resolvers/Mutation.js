@@ -1,4 +1,6 @@
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
+const { PubSub } = require('graphql-subscriptions');
+const pubsub = new PubSub();
 const Mutation = {
     createUser(parent, args, {db}, info) {
         
@@ -10,6 +12,7 @@ const Mutation = {
                 ...args.data
             }
             db.users.push(user);
+            pubsub.publish('userCreated', { createUser: user,payload:args.data })
             return user;
         }else{
             throw new Error('Email taken');
@@ -36,7 +39,7 @@ const Mutation = {
         if(userExists && postExists) {
             const comment = {
                 id: uuidv4(),
-                ...args
+                ...args.comment,
             }
             db.comments.push(comment);
             return comment;

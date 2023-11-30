@@ -5,6 +5,7 @@ import Mutation from "./resolvers/Mutation";
 import User from "./resolvers/User";
 import Comment from "./resolvers/Comment";
 import Post from "./resolvers/Post";
+import Subscription from "./resolvers/subscription";
 
 // Scalar types - String, Boolean, Int, Float, ID
 
@@ -21,6 +22,7 @@ const server = new GraphQLServer({
     User,
     Comment,
     Post,
+    Subscription,
   },
   context: {
     db,
