@@ -6,11 +6,13 @@ import User from "./resolvers/User";
 import Comment from "./resolvers/Comment";
 import Post from "./resolvers/Post";
 import Subscription from "./resolvers/subscription";
+import { PubSub } from "graphql-subscriptions";
 
 // Scalar types - String, Boolean, Int, Float, ID
 
 // Type definitions (schema)
 
+const pubsub = new PubSub();
 // Server setup
 const port = 4000;
 
@@ -26,6 +28,7 @@ const server = new GraphQLServer({
   },
   context: {
     db,
+    pubsub
   },
 });
 

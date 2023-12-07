@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-const { PubSub } = require('graphql-subscriptions');
-const pubsub = new PubSub();
+// const { PubSub } = require('graphql-subscriptions');
+// const pubsub = new PubSub();
 const Mutation = {
-    createUser(parent, args, {db}, info) {
+    createUser(parent, args, {db,pubsub}, info) {
         
         const emailTaken = db.users.some((user) => user.email === args.data.email);
 
@@ -18,7 +18,7 @@ const Mutation = {
             throw new Error('Email taken');
         }
     },
-    createPost(parent, args, {db}, info) {
+    createPost(parent, args, {db,pubsub}, info) {
         const userExists = db.users.some((user) => user.id === args.post.author);
         if(userExists) {
             const post = {
@@ -27,6 +27,7 @@ const Mutation = {
                 
             }
             db.posts.push(post);
+            pubsub.publish('postCreated', { createPost: post,payload:args.post })
             return post;
         }else{
             throw new Error('User not found');
@@ -53,7 +54,8 @@ const Mutation = {
             throw new Error('User not found');
         }
         const deletedUsers = db.users.splice(userIndex, 1);
-        db.posts = posts.filter((post) => {
+        // console.log(db.posts)
+        db.posts = db.posts.filter((post) => {
             const match = post.author === args.id;
             if(match) {
                 db.comments = db.comments.filter((comment) => comment.post !== post.id);

@@ -18,6 +18,7 @@ type Mutation {
 
 type Subscription {
   createUser: User!
+  createPost: Post!
 }
 
 input UpdateUserInput {

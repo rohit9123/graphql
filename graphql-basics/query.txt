@@ -1,3 +1,11 @@
+query{
+  users{
+    name
+    id
+  }
+}
+
+
 mutation {
   createUser(data: { name: "John Dose", email: "johsn.doez@zexamplse.com", age: 30 }) {
     id
@@ -7,3 +15,14 @@ mutation {
   }
 }
 
+subscription{
+  createPost{
+  	id
+  }
+}
+
+mutation{
+  deleteUser(id:"122"){
+		name
+  }
+}

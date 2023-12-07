@@ -1,21 +1,20 @@
-const { PubSub } = require('graphql-subscriptions');
-
-const pubsub = new PubSub();
 
 const Subscription = {
     // Define your subscription resolver here
     createUser: {
-        subscribe: (parent, args, { db }, info)=> {
+        subscribe: (parent, args, { db,pubsub }, info)=> {
             console.log('subs')
             console.log(args.createUser)
             return pubsub.asyncIterator('userCreated');
         },
-        resolve: (payload) => {
-            console.log(payload)
-            console.log('res')
-            return payload.createUser;
-        }
     },
+    createPost: {
+        subscribe: (parent, args, { db,pubsub }, info)=> {
+            console.log('subs')
+            return pubsub.asyncIterator('postCreated');
+        },
+
+    }
 };
 
 module.exports = Subscription;
